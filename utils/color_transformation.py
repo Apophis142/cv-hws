@@ -66,7 +66,7 @@ def rgb_to_mono_channel(
         channel: ty.Literal['gray', 'hsv_saturation', 'lab_luminance', 'hsv_value'] = "gray",
 ) -> np.ndarray:
     if channel == "gray":
-        return rgb2gray(img).astype(np.uint8)
+        return (rgb2gray(img) * 255).astype(np.uint8)
     elif channel == "hsv_saturation":
         return (rgb2hsv(img)[..., 1] * 255).astype(np.uint8)
     elif channel == "hsv_value":
