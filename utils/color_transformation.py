@@ -15,7 +15,7 @@ def bgr2rgb(img: np.ndarray) -> np.ndarray:
 rgb2bgr = bgr2rgb
 
 
-@normalize_input()
+@normalize_input(auto=True)
 def rgb2gray(img: np.ndarray) -> np.ndarray:
     transformation_matrix = np.array([0.299, 0.587, 0.114])
 

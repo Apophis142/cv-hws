@@ -37,7 +37,6 @@ def process_image(
     {sobel_median, sobel_gauss, scharr_median, scharr_gauss,
      prewitt_median, prewitt_gauss, canny_median, canny_gauss}
     """
-    # Предварительная фильтрация
     median_img = apply_non_linear_filter(img_rgb, "median", d=median_d)
     gauss_img = apply_gauss_filter(img_rgb, win_size=gauss_win, sigma=gauss_sigma)
 
@@ -99,7 +98,7 @@ def main(input_dir: str, output_dir: str):
         for name, res in results.items():
             out_path = os.path.join(save_dir, f"{name}.png")
             if "canny" not in name:
-                cv2.imwrite(out_path, to_uint8(log_stretch(res)))
+                cv2.imwrite(out_path, to_uint8(stretch_for_display(res)))
             else:
                 cv2.imwrite(out_path, to_uint8(res))
             print(f"Сохранено: {out_path}")
