@@ -1,7 +1,7 @@
 import numba as nb
 import numpy as np
 
-from utils.filtering import apply_sobel_filter, apply_gauss_filter
+from utils.filtering import apply_sobel_filter
 
 
 @nb.njit(cache=True, inline="always")
@@ -30,7 +30,12 @@ def _hysteresis_bfs(strong_edges, weak_edges):
     return strong_edges
 
 
-def canny_operator(img: np.ndarray, threshold1: float, threshold2: float) -> np.ndarray:
+def canny_operator(
+        img: np.ndarray,
+        threshold1: float,
+        threshold2: float,
+        return_directions: bool = False,
+    ) -> np.ndarray | tuple[np.ndarray, np.ndarray]:
     assert 0 < threshold1 < threshold2 <= 1
 
     borders, directions = apply_sobel_filter(img, return_directions=True)
@@ -39,11 +44,11 @@ def canny_operator(img: np.ndarray, threshold1: float, threshold2: float) -> np.
     if mn != mx:
         borders = (borders - mn) / (mx - mn)
 
-    directions = np.round(directions / np.radians(45)) % 4
-    dir1 = directions == 0
-    dir2 = directions == 1
-    dir3 = directions == 2
-    dir4 = directions == 3
+    quantized = np.round(directions / np.radians(45)) % 4
+    dir1 = quantized == 0
+    dir2 = quantized == 1
+    dir3 = quantized == 2
+    dir4 = quantized == 3
 
     kernels = np.zeros(shape=(*borders.shape, 3, 3))
     kernels[dir1] = np.vstack([np.zeros(3), np.ones(3), np.zeros(3)])
@@ -63,16 +68,21 @@ def canny_operator(img: np.ndarray, threshold1: float, threshold2: float) -> np.
 
     strong_edges = _hysteresis_bfs(strong_edges, weak_edges)
 
-    return strong_edges.astype(np.uint8) * 255
+    edges = strong_edges.astype(np.uint8) * 255
+    if return_directions:
+        return edges, directions
+    return edges
 
 
 if __name__ == "__main__":
     import cv2
+
     from utils.color_transformation import bgr2rgb
 
-    image = cv2.imread("./data/hw2/img_000036.png")
+    image = cv2.imread("./data/logs_pipes/logs-4.jpg")
+    # image = cv2.resize(image, (1080, 720), interpolation=cv2.INTER_LANCZOS4)
 
-    cv2.imshow("Canny borders", canny_operator(bgr2rgb(image), 0.01, 0.03))
+    cv2.imshow("Canny borders", canny_operator(bgr2rgb(image), 0.15, 0.25))
     cv2.waitKey(0) & 0xFF
 
     cv2.destroyAllWindows()
