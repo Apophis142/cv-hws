@@ -1,17 +1,18 @@
-import os
 import argparse
+import os
+
 import cv2
 import numpy as np
 
 from utils.canny import canny_operator
+from utils.color_transformation import bgr2rgb
 from utils.filtering import (
-    apply_sobel_filter,
-    scharr_operator,
-    apply_prewitt_filter,
     apply_gauss_filter,
     apply_non_linear_filter,
+    apply_prewitt_filter,
+    apply_sobel_filter,
+    scharr_operator,
 )
-from utils.color_transformation import bgr2rgb
 
 
 def to_uint8(img: np.ndarray) -> np.ndarray:
@@ -28,7 +29,7 @@ def process_image(
     img_rgb: np.ndarray,
     median_d: int = 3,
     gauss_win: int = 5,
-    gauss_sigma: float = None,
+    gauss_sigma: float | None = None,
     canny_thresh: tuple = (0.03, 0.11),
 ) -> dict:
     """

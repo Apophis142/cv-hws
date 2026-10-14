@@ -1,6 +1,7 @@
-from functools import wraps
 import inspect
 import typing as ty
+from functools import wraps
+
 import numpy as np
 
 

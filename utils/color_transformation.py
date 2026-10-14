@@ -1,7 +1,8 @@
-from functools import wraps
 import inspect
 import typing as ty
 import warnings
+from functools import wraps
+
 import numpy as np
 
 from .image_range import normalize_input, preserve_format

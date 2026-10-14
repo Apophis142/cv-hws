@@ -1,10 +1,10 @@
-from functools import wraps
 import typing as ty
+from functools import wraps
 
 import numpy as np
+
 from .color_transformation import mono_channel_input
 from .image_range import channel_range, preserve_format
-
 
 _SOBEL_X = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
 _SOBEL_Y = _SOBEL_X.T
