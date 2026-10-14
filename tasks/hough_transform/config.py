@@ -7,8 +7,8 @@ from dataclasses import dataclass, field, replace
 
 @dataclass
 class HoughCircleConfig:
-    threshold1: float = 0.01
-    threshold2: float = 0.03
+    threshold1: float = 0.08
+    threshold2: float = 0.017
     r_min: ty.Union[int, float] = 15
     r_max: ty.Union[int, float] = 100
     r_delta: ty.Union[int, float] = 2
