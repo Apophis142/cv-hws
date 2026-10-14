@@ -3,3 +3,5 @@ numba
 numpy
 matplotlib
 opencv-python
+torch
+torchvision
