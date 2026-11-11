@@ -1,0 +1,7 @@
+results/**/*.json
+results/**/*.txt
+results/**/*.pt
+results/**/*.csv
+*.pt
+*.zip
+source-upload.json
